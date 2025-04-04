@@ -19,5 +19,18 @@ O nome **Goal51** é uma homenagem ao nosso querido professor **Dr. Rafael Durel
 3. O **Goal51** envia notificações por **SMS** para o usuário com detalhes sobre eventos relevantes durante as partidas do time escolhido.
 4. O nome **Goal51** reforça a paixão pelo futebol, a interatividade e a emoção de acompanhar os jogos ao vivo do time favorito.
 
+## Manual de Uso
+
+*(Em branco por enquanto)*
+
+---
+
+## Integrantes do Projeto
+
+- Leonardo Gonçalves Flora
+- Luis Gustavo
+- Matheus Felipe Godoi
+
+
 
 ---

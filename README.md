@@ -64,8 +64,9 @@ Com o tempo, outros usuários também avaliam o mesmo filme, e o MovieMood vai o
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/liugoncalves/MovieMood
-   cd seu-repo
+    git clone https://github.com/liugoncalves/MovieMood
+    cd MovieMood
+
    ```
 
 2. **Crie e ative o ambiente virtual:**

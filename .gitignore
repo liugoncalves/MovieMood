@@ -1,12 +1,7 @@
 # Ignorar diretórios e arquivos de build dentro de backend
 /backend/target/
 /backend/.mvn/
-/backend/target/
 /backend/wrapper
-
-# Ignorar arquivos de configuração do Maven dentro de backend
-/backend/mvnw
-/backend/mvnw.cmd
 
 # Ignorar arquivos gerados e dependências do Maven
 *.log
@@ -33,6 +28,5 @@
 # Ignorar pasta target da raiz do projeto (caso exista)
 target/
 
-# Ignorar arquivos de configuração do projeto (caso haja necessidade)
-# application.properties ou arquivos similares que você não deseja versionar
+# Ignorar arquivos de configuração sensíveis, como application.properties
 /backend/src/main/resources/application.properties

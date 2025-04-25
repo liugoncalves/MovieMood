@@ -1,3 +1,4 @@
+
 # 🎬 **MovieMood** — Descubra Filmes Pelas Emoções! 🤖❤️  
 
 > Um sistema inteligente onde você avalia filmes e a IA interpreta seu sentimento!  
@@ -86,3 +87,34 @@ A ideia surgiu da percepção de que nossas opiniões sobre filmes vão além de
 Com o **MovieMood**, queremos propor uma nova maneira de avaliar e descobrir filmes — **pela emoção coletiva**.
 
 ---
+
+## 📝 Padrão de Mensagens de Commit
+
+Para manter o repositório organizado, vamos seguir o padrão abaixo nas mensagens de commit:
+
+### Formato:
+```text
+<tipo>: <descrição curta do que foi feito>
+
+<opcional: descrição mais detalhada se necessário, explicando o porquê ou algum detalhe importante>
+```
+
+### Tipos de Commit:
+- **feat**: Nova funcionalidade.
+- **fix**: Correção de bugs.
+- **docs**: Alterações na documentação.
+- **style**: Mudanças de estilo sem impacto na lógica (ex: formatação).
+- **refactor**: Refatoração de código.
+- **test**: Adição ou alteração de testes.
+- **chore**: Tarefas de manutenção.
+- **build**: Mudanças no processo de build.
+- **ci**: Mudanças nas configurações de CI/CD.
+- **perf**: Melhoria de performance.
+- **deploy**: Alterações relacionadas ao deploy.
+
+### Exemplos:
+```text
+feat: Implementação da funcionalidade de cadastro de filmes
+fix: Correção do bug de validação no campo "nome"
+docs: Atualização do README com informações sobre o projeto
+```

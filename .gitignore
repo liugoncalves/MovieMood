@@ -1,0 +1,38 @@
+# Diretórios de build e arquivos temporários
+/target/
+/.idea/
+/.vscode/
+/mvnw
+/mvnw.cmd
+
+# Arquivos de configuração do Maven
+/.mvn/
+
+# Dependências do Maven
+/.mvn/
+/*.log
+
+# Arquivos de compilação
+*.class
+*.jar
+*.war
+*.ear
+
+# Arquivos do Eclipse e IntelliJ
+/.project
+/.classpath
+/.settings/
+/.idea/
+/*.iml
+
+# Arquivos de configuração de build do Maven
+*.log
+
+# Arquivos do sistema operacional (Exemplo do MacOS)
+.DS_Store
+
+# Arquivos de configuração do IntelliJ
+.idea/
+
+# Configuração do usuário
+*.swp

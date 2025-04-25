@@ -10,4 +10,6 @@ public class MovieMoodApplication {
 		SpringApplication.run(MovieMoodApplication.class, args);
 	}
 
+	
+
 }

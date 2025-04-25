@@ -36,3 +36,7 @@
 
 # Configuração do usuário
 *.swp
+
+#BD
+/src/main/resources
+

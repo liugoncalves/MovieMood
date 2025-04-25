@@ -1,4 +1,4 @@
-package com.moviemood.backend.exception;
+package com.moviemood.exception;
 
 public class FilmeJaExisteException extends RuntimeException {
     public FilmeJaExisteException(String message) {

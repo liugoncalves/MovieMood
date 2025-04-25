@@ -1,13 +1,13 @@
-package com.moviemood.backend.service;
+package com.moviemood.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.moviemood.backend.exception.FilmeJaExisteException;
-import com.moviemood.backend.model.Filme;
-import com.moviemood.backend.repository.FilmeRepository;
+import com.moviemood.exception.FilmeJaExisteException;
+import com.moviemood.model.Filme;
+import com.moviemood.repository.FilmeRepository;
 
 @Service
 public class FilmeService {

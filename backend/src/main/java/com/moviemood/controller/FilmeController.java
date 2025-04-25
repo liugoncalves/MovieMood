@@ -1,4 +1,4 @@
-package com.moviemood.backend.controller;
+package com.moviemood.controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moviemood.backend.model.Filme;
-import com.moviemood.backend.service.FilmeService;
+import com.moviemood.model.Filme;
+import com.moviemood.service.FilmeService;
 
 import jakarta.validation.Valid;
 
@@ -32,6 +32,7 @@ public class FilmeController {
     @GetMapping
     public ResponseEntity<List<Filme>> listarFilmes(){
         List<Filme> filmes = filmeService.listarTodos();
+        System.out.println(filmes);
         return ResponseEntity.ok(filmes);
 
     }

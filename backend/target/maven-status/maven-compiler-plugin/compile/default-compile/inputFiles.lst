@@ -1,2 +1,7 @@
-/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/src/main/java/com/moviemood/backend/MovieMoodApplication.java
-/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/src/main/java/com/moviemood/backend/model/Filme.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/MovieMoodApplication.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/controller/FilmeController.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/exception/FilmeJaExisteException.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/handler/GlobalExceptionHandler.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/model/Filme.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/repository/FilmeRepository.java
+/home/leonardo-goncalves/Documentos/UFLA/Projeto Integrador/MovieMood/backend/src/main/java/com/moviemood/service/FilmeService.java

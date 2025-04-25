@@ -1,4 +1,4 @@
-package com.moviemood.backend;
+package com.moviemood;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MovieMoodApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MovieMoodApplication.class, args);
-	}
-
-	
-
+    public static void main(String[] args) {
+        SpringApplication.run(MovieMoodApplication.class, args);
+    }
 }

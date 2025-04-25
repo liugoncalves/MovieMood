@@ -1,4 +1,4 @@
-package com.moviemood.backend.model;
+package com.moviemood.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +17,6 @@ public class Filme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
 
     @NotBlank(message = "O nome do filme é obrigatório!")
@@ -36,11 +35,10 @@ public class Filme {
     @Max(value=2025, message="O ano não pode ser maior que o atual.")
     private Integer ano;
 
-    public Filme(){
-
+    public Filme() {
     }
 
-    public Filme(String nome, String sinopse, String diretor, String genero, Integer ano){
+    public Filme(String nome, String sinopse, String diretor, String genero, Integer ano) {
         this.nome = nome;
         this.sinopse = sinopse;
         this.diretor = diretor;
@@ -51,12 +49,10 @@ public class Filme {
     @Override
     public String toString(){
         return "Filme: " + '\n' +
-                "nome: " + nome + '\n' +
-                "descrição: " + sinopse + '\n' + 
-                "diretor: " + diretor + '\n' + 
-                "genero: " + genero + '\n' + 
-                "ano: " + ano + '\n';
-
+            "nome: " + nome + '\n' +
+            "descrição: " + sinopse + '\n' + 
+            "diretor: " + diretor + '\n' + 
+            "genero: " + genero + '\n' + 
+            "ano: " + ano + '\n';
     }
-    
 }

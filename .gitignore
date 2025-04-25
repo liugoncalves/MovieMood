@@ -1,42 +1,38 @@
-# Diretórios de build e arquivos temporários
-/target/
-/.idea/
-/.vscode/
-/mvnw
-/mvnw.cmd
+# Ignorar diretórios e arquivos de build dentro de backend
+/backend/target/
+/backend/.mvn/
+/backend/target/
+/backend/wrapper
 
-# Arquivos de configuração do Maven
-/.mvn/
+# Ignorar arquivos de configuração do Maven dentro de backend
+/backend/mvnw
+/backend/mvnw.cmd
 
-# Dependências do Maven
-/.mvn/
-/*.log
+# Ignorar arquivos gerados e dependências do Maven
+*.log
 
-# Arquivos de compilação
+# Ignorar arquivos compilados
 *.class
 *.jar
 *.war
 *.ear
 
-# Arquivos do Eclipse e IntelliJ
-/.project
-/.classpath
-/.settings/
-/.idea/
-/*.iml
+# Ignorar arquivos de configuração do Eclipse e IntelliJ dentro de backend
+/backend/.project
+/backend/.classpath
+/backend/.settings/
+/backend/.idea/
+/backend/*.iml
 
-# Arquivos de configuração de build do Maven
-*.log
-
-# Arquivos do sistema operacional (Exemplo do MacOS)
+# Ignorar arquivos temporários do sistema operacional
 .DS_Store
 
-# Arquivos de configuração do IntelliJ
-.idea/
-
-# Configuração do usuário
+# Ignorar arquivos de configuração do usuário (Ex: Vim, Emacs)
 *.swp
 
-#BD
-/src/main/resources
+# Ignorar pasta target da raiz do projeto (caso exista)
+target/
 
+# Ignorar arquivos de configuração do projeto (caso haja necessidade)
+# application.properties ou arquivos similares que você não deseja versionar
+/backend/src/main/resources/application.properties

@@ -53,7 +53,7 @@ Com o tempo, outros usuários também avaliam o mesmo filme, e o MovieMood vai o
 
 - **Python** + **Django** + **Django REST Framework**  
 - **PostgreSQL**  
-- **TextBlob** para análise de sentimento  
+- **(Indefinido)** para análise de sentimento  
 - **Postman** para testes da API  
 - *(Possível integração futura com frontend em React ou HTML/CSS básico)*
 

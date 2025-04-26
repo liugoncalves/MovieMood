@@ -67,14 +67,6 @@ A IA organiza essas avaliações por tipo (positiva, neutra ou negativa), ajudan
 
 ---
 
-## 👥 Integrantes do Projeto
-
-- 🎓 Leonardo Gonçalves Flora  
-- 💻 Luis Gustavo  
-- 📊 Matheus Felipe Godoi  
-
----
-
 ## 📖 Manual de Uso
 
 🚧 *Em construção... Em breve, um guia passo a passo com Docker e scripts automatizados.*
@@ -118,3 +110,10 @@ feat: Implementação da funcionalidade de cadastro de filmes
 fix: Correção do bug de validação no campo "nome"
 docs: Atualização do README com informações sobre o projeto
 ```
+## 👥 Integrantes do Projeto
+
+- 🎓 Leonardo Gonçalves Flora  
+- 💻 Luis Gustavo  
+- 📊 Matheus Felipe Godoi  
+
+---

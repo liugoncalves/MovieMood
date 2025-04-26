@@ -50,7 +50,7 @@ public class Filme {
     public String toString(){
         return "Filme: " + '\n' +
             "nome: " + nome + '\n' +
-            "descrição: " + sinopse + '\n' + 
+            "sinopse: " + sinopse + '\n' + 
             "diretor: " + diretor + '\n' + 
             "genero: " + genero + '\n' + 
             "ano: " + ano + '\n';

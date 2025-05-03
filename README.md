@@ -21,7 +21,7 @@ A IA organiza essas avaliações por tipo (positiva, neutra ou negativa), ajudan
 - Usar IA para **classificação automática de avaliações textuais**.
 - Separar os filmes em **categorias emocionais** (positivo, neutro, negativo).
 - Permitir ao usuário descobrir os **filmes mais bem avaliados pela emoção coletiva**.
-- Utilizar tecnologias modernas como **Java 21 + Spring Boot**, **PostgreSQL**, **REST APIs**, **Docker**, **RabbitMQ**, e **FastAPI** para a IA.
+- Utilizar tecnologias modernas como **Node.js + Express**, **PostgreSQL**, **REST APIs**, **Docker**, **RabbitMQ**, e **FastAPI** para a IA.
 
 ---
 
@@ -50,20 +50,26 @@ A IA organiza essas avaliações por tipo (positiva, neutra ou negativa), ajudan
 ## ⚙️ Tecnologias Utilizadas
 
 ### Backend principal:
-- **Java 21** + **Spring Boot**
-- **Maven** (gestão de dependências)
-- **PostgreSQL** (banco de dados relacional)
-- **RabbitMQ** (fila de mensagens)
-- **Twilio** (envio de SMS e Emails)
+- **Node.js** — Plataforma backend (v18+)
+- **Express.js** — Framework para criação de APIs RESTful
+- **PostgreSQL** — Banco de dados relacional
+- **pg** (ou **sequelize**) — Bibliotecas para integração com PostgreSQL
+- **RabbitMQ** — Sistema de mensageria
+- **Bull** (ou **Bee-Queue**) — Gerenciamento de filas de tarefas assíncronas (alternativa ao Celery)
+- **Twilio** — Envio de SMS e e-mails
 
 ### IA (serviço separado):
-- **Python** + **FastAPI**
-- *(Biblioteca de análise de sentimentos ainda será definida)*
+- **Python** + **FastAPI** — Serviço de análise de sentimentos
+  - *(Biblioteca de análise de sentimentos ainda será definida)*
 
 ### Infraestrutura:
-- **Docker** (containers para serviços)
-- **GitHub Actions** (CI/CD automatizado)
-- **KrakenD API Gateway** (entrada unificada de requisições - futuro)
+- **Docker** — Containers para orquestração dos serviços
+- **KrakenD** — API Gateway para orquestrar as requisições e interações entre os microsserviços
+- **GitHub Actions** — CI/CD automatizado
+
+### Ferramentas e Serviços:
+- **Postman** — Testes das APIs
+- **pgAdmin4** — Interface gráfica para gerenciar o banco de dados PostgreSQL
 
 ---
 

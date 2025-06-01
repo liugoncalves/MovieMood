@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Django/Migrations
+*/migrations/
+db.sqlite3
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de log e cache
+*.log
+*.pot
+*.pyc
+.DS_Store
+
+# Arquivos de configuração sensíveis (opcional, se você tiver separados)
+.env
+*.env
+
+# Compiled files / system-specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini

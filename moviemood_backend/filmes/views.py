@@ -1,19 +1,23 @@
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from .models import Filme
 from .serializers import FilmeSerializer
 import unicodedata
 
 class CadastrarFilmeView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
     def post(self, request):
         serializer = FilmeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'mensagem': 'Filme cadastrado com sucesso'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({'mensagem': 'Filme cadastrado com sucesso'}, status=201)
+        return Response(serializer.errors, status=400)
 class ListarFilmesView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         filmes = Filme.objects.all()
         serializer = FilmeSerializer(filmes, many=True)

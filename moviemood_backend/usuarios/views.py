@@ -3,6 +3,7 @@ import uuid
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Usuario
 from django.conf import settings
@@ -162,3 +163,10 @@ class DeletarUsuarioView(APIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+class UsuarioMeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UsuarioListagemSerializer(request.user)
+        return Response(serializer.data)

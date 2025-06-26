@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from decouple import config
+from corsheaders.defaults import default_headers
 
 
 # Diretório base
@@ -13,7 +14,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Configuração de Email
@@ -27,6 +28,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # Aplicações instaladas
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +46,9 @@ INSTALLED_APPS = [
 # Middlewares
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -55,6 +58,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'movie_mood.urls'
 
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+
+
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+]
 
 TEMPLATES = [
     {

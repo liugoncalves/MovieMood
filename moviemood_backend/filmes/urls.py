@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (CadastrarFilmeView, ListarFilmesView, ConsultarFilmeView, AtualizarFilmeView,
                      DeletarFilmeView, RankingFilmesView, FiltrarFilmesView)
 
@@ -11,4 +13,4 @@ urlpatterns = [
     path('ranking/', RankingFilmesView.as_view(), name='ranking-filmes'),
     path('filtrar/', FiltrarFilmesView.as_view(), name='filtrar-filmes'),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

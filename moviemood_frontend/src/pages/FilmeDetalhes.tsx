@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
-import { ChevronLeft, ChevronRight, Calendar, Clock, Trash2, Edit } from "lucide-react"
+import { ChevronLeft, ChevronRight, Calendar, Trash2, Edit } from "lucide-react"
 import type { Filme, Avaliacao } from "../types"
 import { filmeService, avaliacaoService } from "../services/api"
 import { useAuth } from "../contexts/AuthContext"
@@ -130,17 +130,15 @@ const FilmeDetalhes: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-6 mb-6">
-              <span className="bg-gray-700 px-3 py-1 rounded text-sm">{filme.classificacao_indicativa}</span>
-              <div className="flex items-center space-x-1">
-                <Calendar className="w-4 h-4" />
-                <span>Ano de lançamento: {filme.ano_lancamento}</span>
-              </div>
               <div className="flex items-center space-x-1">
                 <span>Gênero: {filme.genero}</span>
               </div>
               <div className="flex items-center space-x-1">
-                <Clock className="w-4 h-4" />
-                <span>Duração: {filme.duracao}</span>
+                <span>Diretor: {filme.diretor}</span>
+              </div>
+                <div className="flex items-center space-x-1">
+                <Calendar className="w-4 h-4" />
+                <span>Ano de lançamento: {filme.ano}</span>
               </div>
             </div>
 

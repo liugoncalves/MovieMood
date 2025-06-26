@@ -1,6 +1,6 @@
 import type React from "react"
 import { Link } from "react-router-dom"
-import { Star, Calendar, Clock } from "lucide-react"
+import { Star, Calendar } from "lucide-react"
 import type { Filme } from "../types"
 
 interface FilmeCardProps {
@@ -33,11 +33,7 @@ const FilmeCard: React.FC<FilmeCardProps> = ({ filme, showActions = false, onEdi
         <div className="flex items-center space-x-4 text-sm text-gray-400 mb-2">
           <div className="flex items-center space-x-1">
             <Calendar className="w-4 h-4" />
-            <span>{filme.ano_lancamento}</span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <Clock className="w-4 h-4" />
-            <span>{filme.duracao}</span>
+            <span>{filme.ano}</span>
           </div>
         </div>
 
@@ -47,10 +43,8 @@ const FilmeCard: React.FC<FilmeCardProps> = ({ filme, showActions = false, onEdi
             <span className="text-white font-semibold">
               {filme.nota_media ? `${filme.nota_media.toFixed(1)}` : "N/A"}
             </span>
-            <span className="text-gray-400 text-sm">({filme.total_avaliacoes || 0})</span>
+            <span className="text-gray-400 text-sm">({filme.numero_avaliacoes || 0})</span>
           </div>
-
-          <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">{filme.classificacao_indicativa}</span>
         </div>
 
         <div className="mt-2">

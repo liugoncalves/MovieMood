@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Calendar, Clock, ChevronRight } from "lucide-react"
+import { Calendar, ChevronRight } from "lucide-react"
 import type { Filme } from "../types"
 import { filmeService } from "../services/api"
 
@@ -70,8 +70,8 @@ const Ranking: React.FC = () => {
                 <div className="w-32 h-48 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
                   {filme.poster ? (
                     <img
-                      src={filme.poster || "/placeholder.svg"}
-                      alt={filme.titulo}
+                      src={`http://localhost:8000/imgs/posters/${filme.poster}`}
+                      alt={filme.nome}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -85,17 +85,15 @@ const Ranking: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h2 className="text-2xl font-bold mb-2">{filme.titulo}</h2>
+                      <h2 className="text-2xl font-bold mb-2">{filme.nome}</h2>
                       <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
-                        <span className="bg-gray-700 px-2 py-1 rounded">{filme.classificacao_indicativa}</span>
+                          <span>Gênero: {filme.genero}</span>
+                          <div className="flex items-center space-x-1">
+                            <span>Diretor: {filme.diretor}</span>
+                          </div>
                         <div className="flex items-center space-x-1">
                           <Calendar className="w-4 h-4" />
-                          <span>Ano de lançamento: {filme.ano_lancamento}</span>
-                        </div>
-                        <span>Gênero: {filme.genero}</span>
-                        <div className="flex items-center space-x-1">
-                          <Clock className="w-4 h-4" />
-                          <span>Duração: {filme.duracao}</span>
+                          <span>Ano de lançamento: {filme.ano}</span>
                         </div>
                       </div>
                     </div>
@@ -111,7 +109,7 @@ const Ranking: React.FC = () => {
 
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold mb-2">Sinopse</h3>
-                    <p className="text-gray-300 leading-relaxed line-clamp-3">{filme.sinopse}</p>
+                    <p className="text-gray-300 leading-relaxed line-clamp-3">{filme.descricao}</p>
                   </div>
 
                   <div className="flex items-center space-x-4">

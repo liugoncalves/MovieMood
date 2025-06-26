@@ -10,14 +10,13 @@ export interface Usuario {
 export interface Filme {
   id?: number
   nome: string
-  classificacao_indicativa: string
-  ano_lancamento: number
-  genero: string
-  duracao: string
   descricao: string
+  diretor: string
+  genero: string
+  ano: number
   poster?: string
   nota_media?: number
-  total_avaliacoes?: number
+  numero_avaliacoes?: number
 }
 
 export interface Avaliacao {

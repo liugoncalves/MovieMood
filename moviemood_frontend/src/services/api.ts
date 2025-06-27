@@ -43,6 +43,7 @@ export const filmeService = {
 export const avaliacaoService = {
   listar: () => api.get("/avaliacoes/listar"),
   avaliar: (dados: any) => api.post("/avaliacoes/avaliar/", dados),
+  consultar: (filmeId: number) => api.get(`/avaliacoes/consultar/${filmeId}/`),
 }
 
 // Serviço de login

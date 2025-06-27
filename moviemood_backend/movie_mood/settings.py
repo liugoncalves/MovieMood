@@ -61,9 +61,6 @@ ROOT_URLCONF = 'movie_mood.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-
-
-
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "authorization",
 ]

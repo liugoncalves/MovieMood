@@ -11,7 +11,6 @@ interface FilmeCardProps {
 }
 
 const FilmeCard: React.FC<FilmeCardProps> = ({ filme, showActions = false, onEdit, onDelete }) => {
-  console.log("FilmeCard filme.poster:", filme.poster);  // <-- aqui
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
       <Link to={`/filme/${filme.id}`}>

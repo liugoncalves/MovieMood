@@ -41,3 +41,25 @@ class ListaAvaliacoesView(ListAPIView):
     queryset = Avaliacao.objects.all().order_by('-criado_em')
     serializer_class = AvaliacaoSerializer
     permission_classes = [IsAuthenticated]
+
+
+class ConsultarAvaliacaoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, filme_id):
+        usuario = request.user
+        try:
+            avaliacao = Avaliacao.objects.get(usuario=usuario, filme_id=filme_id)
+            serializer = AvaliacaoSerializer(avaliacao)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Avaliacao.DoesNotExist:
+            return Response({'detail': 'Avaliação não encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ListaAvaliacoesUsuarioView(ListAPIView):
+    serializer_class = AvaliacaoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        usuario = self.request.user
+        return Avaliacao.objects.filter(usuario=usuario).order_by('-criado_em')

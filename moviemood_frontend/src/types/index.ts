@@ -24,9 +24,11 @@ export interface Avaliacao {
   usuario: number
   filme: number
   nota: number
-  comentario: string
-  data_avaliacao?: string
+  texto: string
+  criado_em?: string
   nome_usuario?: string
+  sentimento?: string
+  sentimento_texto?: string
 }
 
 export interface AuthContextType {

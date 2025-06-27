@@ -13,6 +13,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['cargo'] = user.cargo  
         token['nome'] = user.nome
         token['cpf'] = user.cpf
+        token['id'] = user.id
 
         return token
 
@@ -22,6 +23,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['cargo'] = self.user.cargo
         data['nome'] = self.user.nome
         data['cpf'] = self.user.cpf
+        data['id'] = self.user.id
         return data
 
 class UsuarioCadastroSerializer(serializers.Serializer):

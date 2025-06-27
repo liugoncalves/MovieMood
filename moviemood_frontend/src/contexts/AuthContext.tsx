@@ -19,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [usuario, setUsuario] = useState<Usuario | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
+  // ✅ Verifica se há token e dados salvos no localStorage ao iniciar
   useEffect(() => {
     const token = localStorage.getItem("token")
     const userData = localStorage.getItem("usuario")
@@ -28,30 +29,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [])
 
+  // ✅ Faz login, salva no localStorage e atualiza o estado
   const login = async (email: string, senha: string): Promise<boolean> => {
     try {
-      const response = await api.post("/login/", { email, password: senha });
+      const response = await api.post("/login/", { email, password: senha })
       if (response.data.access) {
         const userData = {
+          id: response.data.id,
           cargo: response.data.cargo,
           nome: response.data.nome,
           cpf: response.data.cpf,
           email: email,
-        };
-        setUsuario(userData);
-        setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.access);
-        localStorage.setItem("usuario", JSON.stringify(userData));
-        return true;
+        }
+        setUsuario(userData)
+        setIsAuthenticated(true)
+        localStorage.setItem("token", response.data.access)
+        localStorage.setItem("usuario", JSON.stringify(userData))
+        return true
       }
-      return false;
+      return false
     } catch (error) {
-      console.error("Erro no login:", error);
-      return false;
+      console.error("Erro no login:", error)
+      return false
     }
   }
 
-
+  // ✅ Faz logout e limpa tudo
   const logout = () => {
     setUsuario(null)
     setIsAuthenticated(false)
@@ -59,7 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem("usuario")
   }
 
-  const cadastrar = async (dados: Omit<Usuario, "id"> & { confirmar_senha: string }): Promise<boolean> => {
+  // ✅ Cadastro (padrão)
+  const cadastrar = async (
+    dados: Omit<Usuario, "id"> & { confirmar_senha: string }
+  ): Promise<boolean> => {
     try {
       const { confirmar_senha, ...dadosUsuario } = dados
       const response = await api.post("/usuarios/cadastrar/", dadosUsuario)

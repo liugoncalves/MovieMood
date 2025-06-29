@@ -87,117 +87,103 @@ A IA analisa os seguintes fatores no texto para estimar o sentimento e nota:
 
 ---
 
-# Guia de Instalação e Configuração do Backend
-## Passo 1: Clonar o repositório
+# 📖 Manual de Instalação
 
-```bash
-git clone https://github.com/seu-usuario/moviemood.git
-cd moviemood
-```
+Este guia explica como rodar o backend, banco de dados e frontend do MovieMood usando Docker e Docker Compose.
 
 ---
 
-## Passo 2: Criar e ativar o ambiente virtual
+## Passo 1: Criar o arquivo `.env`
 
-Linux/macOS:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
+Você deve criar dois arquivos `.env` para o backend e frontend:
 
-Windows (PowerShell):
-```powershell
-python -m venv venv
-.\venv\Scripts\activate
-```
-
----
-
-## Passo 3: Instalar dependências
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Passo 4: Configurar variáveis de ambiente
-
-Crie um arquivo `.env` na raiz do projeto com este conteúdo (exemplo):
+- No diretório `moviemood_backend`, crie `.env` com suas variáveis, por exemplo:
 
 ```env
-# Chave da API Gemini (Google AI)
-GEMINI_API_KEY=sua-chave-aqui
+GEMINI_API_KEY=sua-chave-gemini-aqui
 
-# Configurações Django
-SECRET_KEY=sua-secret-key-aqui
+SECRET_KEY="django-insecure-sua-chave"
 DEBUG=True
 
-# Email SMTP Gmail
 EMAIL_HOST_USER=seu-email@gmail.com
-EMAIL_HOST_PASSWORD=sua-senha-de-app-aqui
+EMAIL_HOST_PASSWORD=sua-senha-de-app
 
-# Banco de Dados PostgreSQL
 DB_NAME=moviemood
 DB_USER=postgres
 DB_PASSWORD=sua-senha-do-banco
-DB_HOST=localhost
+DB_HOST=db
 DB_PORT=5432
 ```
 
----
+- No diretório `moviemood_frontend`, crie `.env` com:
 
-## Passo 5: Criar banco de dados no PostgreSQL
-
-Abra o terminal do PostgreSQL (`psql`) e execute:
-
-```sql
-CREATE DATABASE moviemood;
-CREATE USER postgres WITH PASSWORD 'sua-senha-do-banco';
-GRANT ALL PRIVILEGES ON DATABASE moviemood TO postgres;
+```env
+VITE_API_URL=http://localhost:8000/api
+VITE_NODE_ENV=development
 ```
 
-Ajuste o nome do usuário e senha conforme sua configuração local.
-
 ---
 
-## Passo 6: Rodar migrações para criar tabelas
+## Passo 2: Usar o Docker Compose para subir os serviços
+
+No diretório raiz do projeto, rode:
 
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+docker-compose up --build
 ```
+
+Esse comando vai construir e subir os containers do backend, banco de dados PostgreSQL e frontend React simultaneamente.
 
 ---
 
-## Passo 7: Criar usuário administrador (opcional)
+## Passo 3: Criar o superusuário do Django
+
+Depois que o backend estiver rodando, abra um terminal novo e execute:
 
 ```bash
-python manage.py createsuperuser
+docker exec -it moviemood-backend-1 python manage.py createsuperuser
 ```
+
+Siga as instruções para criar o usuário administrador.
 
 ---
 
-## Passo 8: Rodar o servidor localmente
+## Passo 4 (opcional): Importar dados iniciais no banco
+
+Se quiser importar o arquivo `filmes_filme_inserts.sql` para popular o banco, copie-o para dentro do container do banco de dados:
 
 ```bash
-python manage.py runserver
+docker cp filmes_filme_inserts.sql moviemood-db-1:/tmp/filmes_filme_inserts.sql
+```
+
+Depois, execute dentro do container:
+
+```bash
+docker exec -it moviemood-db-1 psql -U postgres -d moviemood -f /tmp/filmes_filme_inserts.sql
 ```
 
 ---
 
-## Dicas Extras
+## Observações
 
-- Use o Postman para testar as APIs RESTful.
-- Configure o SMTP Gmail para envio de e-mails (confirme as configurações de segurança da conta).
-- Para produção, ajuste o `DEBUG=False` e configure variáveis de ambiente com segurança.
-- Utilize Docker para facilitar o deploy e isolamento de ambiente.
+- O nome dos containers (`moviemood-backend-1`, `moviemood-db-1`) pode variar dependendo do seu setup do Docker Compose. Use `docker ps` para verificar.
+- Certifique-se de que as variáveis de ambiente nos `.env` estejam corretas para evitar erros de conexão.
+- Para parar os containers, use:
+
+```bash
+docker-compose down
+```
 
 ---
 
-## 📖 Manual de Uso
+Agora você pode acessar:
 
-🚧 *Em breve será adicionado um passo a passo com Docker e scripts de automação para rodar o sistema localmente.*
+- Backend: `http://localhost:8000`
+- Frontend: `http://localhost:3000`
+
+---
+
+**Boa sorte com o MovieMood!**
 
 ---
 
@@ -205,39 +191,6 @@ python manage.py runserver
 
 Filmes nos marcam emocionalmente. Uma simples nota nem sempre reflete o que sentimos.  
 O **MovieMood** quer revolucionar a forma de avaliar filmes: **não por estrelas, mas pelo que sentimos após assisti-los**.
-
----
-
-## 📝 Padrão de Mensagens de Commit
-
-Para manter o repositório organizado, vamos seguir o padrão abaixo nas mensagens de commit:
-
-### Formato:
-```text
-<tipo>: <descrição curta do que foi feito>
-
-<opcional: descrição mais detalhada se necessário, explicando o porquê ou algum detalhe importante>
-```
-
-### Tipos de Commit:
-- **feat**: Nova funcionalidade.
-- **fix**: Correção de bugs.
-- **docs**: Alterações na documentação.
-- **style**: Mudanças de estilo sem impacto na lógica (ex: formatação).
-- **refactor**: Refatoração de código.
-- **test**: Adição ou alteração de testes.
-- **chore**: Tarefas de manutenção.
-- **build**: Mudanças no processo de build.
-- **ci**: Mudanças nas configurações de CI/CD.
-- **perf**: Melhoria de performance.
-- **deploy**: Alterações relacionadas ao deploy.
-
-### Exemplos:
-```text
-feat: Implementação da funcionalidade de cadastro de filmes
-fix: Correção do bug de validação no campo "nome"
-docs: Atualização do README com informações sobre o projeto
-```
 
 ---
 

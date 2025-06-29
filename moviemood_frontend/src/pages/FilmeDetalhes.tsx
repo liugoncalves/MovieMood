@@ -28,6 +28,8 @@ const FilmeDetalhes: React.FC = () => {
   const [usuarioSelecionado, setUsuarioSelecionado] = useState<Usuario | null>(null)
   const [loadingUsuario, setLoadingUsuario] = useState(false)
   const [paginaAvaliacoes, setPaginaAvaliacoes] = useState(0)
+  const [modalAvaliacaoAberto, setModalAvaliacaoAberto] = useState(false);
+  const [avaliacaoSelecionada, setAvaliacaoSelecionada] = useState<Avaliacao | null>(null);
   const avaliacoesPorPagina = 4
 
   const { usuario, isAuthenticated } = useAuth()
@@ -54,6 +56,21 @@ const FilmeDetalhes: React.FC = () => {
     }
   }, [mensagemToast])
 
+  useEffect(() => {
+    function handleEsc(event: KeyboardEvent) {
+      if (event.key === "Escape" && modalAvaliacaoAberto) {
+        fecharModalAvaliacao();
+      }
+    }
+
+    window.addEventListener("keydown", handleEsc);
+
+    // Cleanup ao desmontar ou modal fechar
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [modalAvaliacaoAberto]);
+
   const carregarFilme = async () => {
     try {
       const response = await filmeService.consultar(Number(id))
@@ -62,6 +79,31 @@ const FilmeDetalhes: React.FC = () => {
       console.error("Erro ao carregar filme:", error)
       setFilme(null)
     }
+  }
+
+  const abrirModalAvaliacao = (avaliacao: Avaliacao) => {
+    setAvaliacaoSelecionada(avaliacao);
+    setModalAvaliacaoAberto(true);
+  }
+
+  const fecharModalAvaliacao = () => {
+    setModalAvaliacaoAberto(false);
+    setAvaliacaoSelecionada(null);
+  }
+
+  // Função para limpar a análise da IA
+  function limparAnaliseIA(texto: string) {
+    if (!texto) return texto;
+
+    const linhas = texto.trim().split('\n');
+
+    // Verifica se a última linha tem "sentimento:" e "nota:"
+    const ultimaLinha = linhas[linhas.length - 1].toLowerCase();
+    if (ultimaLinha.includes("sentimento:") && ultimaLinha.includes("nota:")) {
+      linhas.pop(); // Remove essa última linha
+    }
+
+    return linhas.join('\n');
   }
 
   const carregarAvaliacoes = async () => {
@@ -335,7 +377,7 @@ const FilmeDetalhes: React.FC = () => {
               </div>
               <div className="mb-4">
                 <span className="font-semibold text-white">Sinopse</span>
-                <p className="text-gray-300 leading-relaxed line-clamp-3 mt-1">{filme.descricao}</p>
+                <p className="text-gray-300 leading-relaxed mt-1">{filme.descricao}</p>
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -433,22 +475,19 @@ const FilmeDetalhes: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {avaliacoesAtuais.map((a) => (
-                  <div key={a.id} className="card-dark cursor-pointer hover:bg-[#23232a] transition-colors" onClick={() => abrirModalUsuario(a.cpf_usuario || '')}>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="avatar">
-                        {a.nome_usuario?.charAt(0).toUpperCase() || "U"}
-                      </div>
-                      <div>
-                        <div className="font-semibold">{a.nome_usuario || "Usuário"}</div>
-                        <div className="text-xs text-gray-400">Clique para ver perfil</div>
-                      </div>
+                  <div
+                    key={a.id}
+                    className="card-dark cursor-pointer hover:bg-[#23232a] transition-colors p-4"
+                    onClick={() => abrirModalAvaliacao(a)}
+                  >
+                    <div className="font-semibold text-white mb-2">
+                      {a.nome_usuario || "Usuário"}
                     </div>
-                    <p className="text-gray-300 text-sm leading-relaxed mb-2">{a.texto}</p>
 
                     <div className="text-sm text-gray-400 space-y-1">
-                      <div>⭐ <span className="text-white font-medium">Nota da IA:</span> {a.nota}</div>
-                      <div>🧠 <span className="text-white font-medium">Sentimento:</span> {a.sentimento?.toUpperCase() || "Desconhecido"}</div>
-                      <div>📅 <span className="text-white font-medium">Data:</span> {new Date(a.criado_em || a.data_avaliacao || "").toLocaleDateString()}</div>
+                      <div>⭐ <span className="font-medium">Nota:</span> {a.nota}</div>
+                      <div>🧠 <span className="font-medium">Sentimento:</span> {a.sentimento?.toUpperCase() || "Desconhecido"}</div>
+                      <div>📅 <span className="font-medium">Data:</span> {new Date(a.criado_em || a.data_avaliacao || "").toLocaleDateString()}</div>
                     </div>
                   </div>
                 ))}
@@ -555,64 +594,66 @@ const FilmeDetalhes: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de informações do usuário */}
-      {modalUsuarioAberto && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-          <div className="bg-[#0F0F11] rounded-lg p-6 max-w-md w-full text-white">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold">Perfil do Usuário</h3>
+     {modalAvaliacaoAberto && avaliacaoSelecionada && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50 p-6"
+          onClick={fecharModalAvaliacao}  // fecha ao clicar no backdrop
+        >
+          <div
+            className="bg-[#0F0F11] rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col text-white relative shadow-xl"
+            onClick={(e) => e.stopPropagation()}  // evita fechar ao clicar dentro da modal
+          >
+            {/* Cabeçalho fixo */}
+            <header className="flex items-center justify-between border-b border-gray-700 p-6 sticky top-0 bg-[#0F0F11] z-50">
+              <h2 className="text-4xl font-extrabold tracking-tight">Detalhes da Avaliação</h2>
               <button
-                onClick={fecharModalUsuario}
+                onClick={fecharModalAvaliacao}
                 className="text-gray-400 hover:text-white transition-colors"
+                title="Fechar"
               >
-                <X className="w-5 h-5" />
+                <X className="w-8 h-8" />
               </button>
+            </header>
+
+            {/* Conteúdo rolável abaixo do header */}
+            <div className="overflow-y-auto px-8 py-6 flex-1">
+              
+              {/* Descrição do usuário */}
+              <section className="mb-10">
+                <h3 className="text-2xl font-semibold mb-3 border-b border-gray-700 pb-2">Descrição do usuário</h3>
+                <p className="bg-[#18181b] p-6 rounded-lg whitespace-pre-wrap text-lg leading-relaxed">
+                  {avaliacaoSelecionada.texto || "Sem descrição"}
+                </p>
+              </section>
+
+              {/* Análise da IA e Informações adicionais lado a lado */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* Análise da IA */}
+                <div>
+                  <h3 className="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">Análise da IA</h3>
+                  <p className="text-lg mb-3">
+                    <strong>⭐ Nota:</strong> <span className="font-medium">{avaliacaoSelecionada.nota}</span>
+                  </p>
+                  <p className="text-lg mb-4">
+                    <strong>🧠 Sentimento:</strong> <span className="font-medium">{avaliacaoSelecionada.sentimento?.toUpperCase() || "DESCONHECIDO"}</span>
+                  </p>
+                  {avaliacaoSelecionada.sentimento_texto && (
+                    <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{limparAnaliseIA(avaliacaoSelecionada.sentimento_texto)}</p>
+                  )}
+                </div>
+
+                {/* Informações adicionais */}
+                <div>
+                  <h3 className="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">Informações adicionais</h3>
+                  <p className="mb-3">
+                    <strong>Nome do usuário:</strong> {avaliacaoSelecionada.nome_usuario || "Usuário"}
+                  </p>
+                  <p>
+                    <strong>Data da avaliação:</strong> {new Date(avaliacaoSelecionada.criado_em || avaliacaoSelecionada.data_avaliacao || "").toLocaleString()}
+                  </p>
+                </div>
+              </section>
             </div>
-
-            {loadingUsuario ? (
-              <div className="text-center py-8">
-                <div className="text-gray-400">Carregando...</div>
-              </div>
-            ) : usuarioSelecionado ? (
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <div className="avatar">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold">{usuarioSelecionado.nome}</h4>
-                    <p className="text-gray-400">{usuarioSelecionado.cargo === "gerente" ? "Gerente" : "Usuário"}</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Nome Completo</label>
-                    <div className="bg-[#18181b] px-3 py-2 rounded border border-gray-700">
-                      {usuarioSelecionado.nome}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Email</label>
-                    <div className="bg-[#18181b] px-3 py-2 rounded border border-gray-700">
-                      {usuarioSelecionado.email}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Cargo</label>
-                    <div className="bg-[#18181b] px-3 py-2 rounded border border-gray-700">
-                      {usuarioSelecionado.cargo === "gerente" ? "Gerente" : "Usuário"}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <div className="text-red-400">Erro ao carregar dados do usuário</div>
-              </div>
-            )}
           </div>
         </div>
       )}

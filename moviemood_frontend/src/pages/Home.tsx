@@ -39,9 +39,17 @@ const Home: React.FC = () => {
         )
 
         if (filmesComAvaliacoes.length > 0) {
-          const destaque = filmesComAvaliacoes.reduce((prev: Filme, current: Filme) =>
-            (current.nota_media || 0) > (prev.nota_media || 0) ? current : prev
-          )
+          const destaque = filmesComAvaliacoes.reduce((prev: Filme, current: Filme) => {
+            const notaA = current.nota_media || 0
+            const notaB = prev.nota_media || 0
+
+            const avalA = current.numero_avaliacoes || 0
+            const avalB = prev.numero_avaliacoes || 0
+
+            if (notaA > notaB) return current
+            if (notaA === notaB && avalA > avalB) return current
+            return prev
+          })
           setFilmeDestaque(destaque)
         } else {
           setFilmeDestaque(filmesData[0])

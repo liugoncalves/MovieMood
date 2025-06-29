@@ -21,21 +21,30 @@ const Login: React.FC = () => {
     setErro("")
 
     try {
-      const sucesso = await login(email, senha)
-      if (sucesso) {
-        navigate("/")
+      const result = await login(email, senha)
+
+      if (result.success) {
+        navigate("/home")
+      } else if (result.needsConfirmation) {
+        // Redireciona para a página de confirmação com o CPF
+        const params = new URLSearchParams()
+        if (result.cpf) {
+          params.append('cpf', result.cpf)
+        }
+        navigate(`/confirmacao?${params.toString()}`)
       } else {
         setErro("Email ou senha incorretos")
       }
-    } catch (error) {
-      setErro("Erro ao fazer login. Tente novamente.")
+    } catch (error: any) {
+      console.error("Erro no login:", error)
+      setErro(error.response?.data?.detail || "Erro ao fazer login. Tente novamente.")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex">
+    <div className="min-h-screen bg-[#09090B] flex">
       {/* Lado esquerdo - Formulário */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
@@ -53,7 +62,7 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Insira seu email"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -68,7 +77,7 @@ const Login: React.FC = () => {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 placeholder="Insira sua senha"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -78,7 +87,7 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-white py-3 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Entrando..." : "Entrar"}
             </button>
@@ -86,7 +95,7 @@ const Login: React.FC = () => {
 
           <div className="mt-6 text-center">
             <span className="text-gray-400">Não possui uma conta? </span>
-            <Link to="/cadastro" className="text-blue-400 hover:text-blue-300">
+            <Link to="/cadastro" className="hover:underline" style={{ color: '#FEFEFE' }}>
               Cadastre-se aqui
             </Link>
           </div>
@@ -94,7 +103,7 @@ const Login: React.FC = () => {
       </div>
 
       {/* Lado direito - Logo e slogan */}
-      <div className="flex-1 bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center p-8">
+      <div className="flex-1 bg-[#09090B] flex items-center justify-center p-8">
         <div className="text-center">
           <div className="bg-white rounded-3xl p-6 mb-6 inline-block">
             <Film className="w-16 h-16 text-gray-900" />

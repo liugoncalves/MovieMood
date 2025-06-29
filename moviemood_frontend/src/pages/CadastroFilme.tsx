@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Upload, Trash2, Edit } from "lucide-react"
+import { Upload } from "lucide-react"
 import { filmeService } from "../services/api"
-import { useAuth } from "../contexts/AuthContext"
 
 const CadastroFilme: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,14 +19,7 @@ const CadastroFilme: React.FC = () => {
   const [erro, setErro] = useState("")
   const [sucesso, setSucesso] = useState(false)
 
-  const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login")
-    }
-  }, [isAuthenticated, navigate])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, files } = e.target as HTMLInputElement
@@ -64,17 +56,31 @@ const CadastroFilme: React.FC = () => {
       }
 
       const response = await filmeService.cadastrar(data)
-      if (response.status === 201 || response.data.success) {
-        setSucesso(true)
-        setTimeout(() => {
-          navigate("/")
-        }, 2000)
-      } else {
-        setErro("Erro ao cadastrar filme. Tente novamente.")
-      }
-    } catch (error) {
+
+      // Se chegou até aqui, o filme foi cadastrado com sucesso
+      setSucesso(true)
+      setTimeout(() => {
+        navigate("/home")
+      }, 2000)
+
+    } catch (error: any) {
       console.error("Erro ao cadastrar filme:", error)
-      setErro("Erro ao cadastrar filme. Verifique os dados e tente novamente.")
+
+      // Tratamento específico para diferentes tipos de erro
+      if (error.response) {
+        // Erro com resposta do servidor
+        const errorMessage = error.response.data?.erro ||
+          error.response.data?.detail ||
+          error.response.data?.mensagem ||
+          "Erro ao cadastrar filme. Verifique os dados e tente novamente."
+        setErro(errorMessage)
+      } else if (error.request) {
+        // Erro de rede (sem resposta do servidor)
+        setErro("Erro de conexão. Verifique se o servidor está rodando e tente novamente.")
+      } else {
+        // Outro tipo de erro
+        setErro("Erro inesperado. Tente novamente.")
+      }
     } finally {
       setLoading(false)
     }
@@ -82,7 +88,7 @@ const CadastroFilme: React.FC = () => {
 
   if (sucesso) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#09090B] flex items-center justify-center">
         <div className="text-center">
           <div className="text-green-400 text-6xl mb-4">✓</div>
           <h2 className="text-white text-2xl font-bold mb-2">Filme cadastrado com sucesso!</h2>
@@ -93,10 +99,10 @@ const CadastroFilme: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-[#09090B] text-white">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center space-x-2 text-gray-400">
-          <Link to="/" className="hover:text-white">Início</Link>
+          <Link to="/home" className="hover:text-white">Início</Link>
           <span>›</span>
           <span>Cadastro de Filmes</span>
         </div>
@@ -128,14 +134,6 @@ const CadastroFilme: React.FC = () => {
               <div className="flex-1 space-y-6">
                 <div className="flex items-center justify-between">
                   <h1 className="text-2xl font-bold">Cadastro de Filme</h1>
-                  <div className="flex space-x-2">
-                    <button type="button" className="p-2 bg-red-600 rounded-lg hover:bg-red-700">
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                    <button type="button" className="p-2 bg-blue-600 rounded-lg hover:bg-blue-700">
-                      <Edit className="w-5 h-5" />
-                    </button>
-                  </div>
                 </div>
 
                 <div>
@@ -146,7 +144,7 @@ const CadastroFilme: React.FC = () => {
                     value={formData.nome}
                     onChange={handleChange}
                     placeholder="Insira o título do filme"
-                    className="w-full px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="input-dark"
                     required
                   />
                 </div>
@@ -158,20 +156,27 @@ const CadastroFilme: React.FC = () => {
                       name="genero"
                       value={formData.genero}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="input-dark"
                       required
                     >
                       <option value="">Selecione</option>
-                      <option value="Ação">Ação</option>
-                      <option value="Aventura">Aventura</option>
-                      <option value="Comédia">Comédia</option>
-                      <option value="Drama">Drama</option>
-                      <option value="Ficção científica">Ficção científica</option>
-                      <option value="Horror">Horror</option>
-                      <option value="Romance">Romance</option>
-                      <option value="Thriller">Thriller</option>
-                      <option value="Fantasia">Fantasia</option>
-                      <option value="Mistério">Mistério</option>
+                      <option value="acao">Ação</option>
+                      <option value="animacao">Animação</option>
+                      <option value="aventura">Aventura</option>
+                      <option value="cinebiografia">Cinebiografia</option>
+                      <option value="comedia">Comédia</option>
+                      <option value="crime">Crime</option>
+                      <option value="drama">Drama</option>
+                      <option value="esporte">Esporte</option>
+                      <option value="fantasia">Fantasia</option>
+                      <option value="faroeste">Faroeste</option>
+                      <option value="ficcao cientifica">Ficção Científica</option>
+                      <option value="guerra">Guerra</option>
+                      <option value="horror">Horror</option>
+                      <option value="misterio">Mistério</option>
+                      <option value="musical">Musical</option>
+                      <option value="romance">Romance</option>
+                      <option value="suspense">Suspense</option>
                     </select>
                   </div>
 
@@ -183,7 +188,7 @@ const CadastroFilme: React.FC = () => {
                       value={formData.diretor}
                       onChange={handleChange}
                       placeholder="Diretor"
-                      className="w-full px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="input-dark"
                       required
                     />
                   </div>
@@ -198,7 +203,7 @@ const CadastroFilme: React.FC = () => {
                       placeholder="2024"
                       min="1900"
                       max={new Date().getFullYear() + 5}
-                      className="w-full px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="input-dark"
                       required
                     />
                   </div>
@@ -210,34 +215,33 @@ const CadastroFilme: React.FC = () => {
                     name="descricao"
                     value={formData.descricao}
                     onChange={handleChange}
-                    placeholder="Escreva a sinopse do filme aqui..."
-                    rows={6}
-                    className="w-full px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    placeholder="Descreva a sinopse do filme"
+                    rows={4}
+                    className="input-dark"
                     required
                   />
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                    <span className="text-lg font-bold">0%</span>
-                  </div>
-                  <span>Não há Avaliações</span>
-                </div>
-
                 {erro && <div className="text-red-400 text-sm">{erro}</div>}
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-white text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Cadastrando..." : "+ Cadastrar"}
-                </button>
+                <div className="flex space-x-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 btn-white py-3 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? "Cadastrando..." : "Cadastrar Filme"}
+                  </button>
+                  <Link
+                    to="/home"
+                    className="px-6 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    Cancelar
+                  </Link>
+                </div>
               </div>
             </div>
           </form>
-
-          {/* IA e Avaliação estão mantidos sem alterações */}
         </div>
       </div>
     </div>

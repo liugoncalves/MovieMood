@@ -59,13 +59,17 @@ class RankingFilmesView(APIView):
         ordem = request.query_params.get('ordem', 'melhores')
 
         if ordem == 'piores':
-            filmes = Filme.objects.filter(numero_avaliacoes__gt=0).order_by('nota_media')[:10]
+            filmes = (Filme.objects
+                      .filter(numero_avaliacoes__gt=0)
+                      .order_by('nota_media', '-numero_avaliacoes')[:10])
         else:  # padrão: melhores
-            filmes = Filme.objects.filter(numero_avaliacoes__gt=0).order_by('-nota_media')[:10]
+            filmes = (Filme.objects
+                      .filter(numero_avaliacoes__gt=0)  
+                      .order_by('-nota_media', '-numero_avaliacoes')[:10])
 
         serializer = FilmeSerializer(filmes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+        
 def normalize_text(text):
     text = text.lower()
     text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('utf-8')
@@ -81,7 +85,7 @@ class FiltrarFilmesView(APIView):
         filtros = {}
 
         if genero:
-            filtros['genero__icontains'] = normalize_text(genero)
+            filtros['genero__iexact'] = genero.strip()
         if ano:
             filtros['ano'] = ano
 

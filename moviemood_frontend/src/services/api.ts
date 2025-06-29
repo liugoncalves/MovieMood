@@ -13,6 +13,41 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+// Interceptor para refresh token
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config
+
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+
+      const refreshToken = localStorage.getItem("refresh_token")
+      if (refreshToken) {
+        try {
+          const response = await axios.post("http://localhost:8000/api/token/refresh/", {
+            refresh: refreshToken
+          })
+          
+          const { access } = response.data
+          localStorage.setItem("token", access)
+          
+          originalRequest.headers.Authorization = `Bearer ${access}`
+          return api(originalRequest)
+        } catch (refreshError) {
+          localStorage.removeItem("token")
+          localStorage.removeItem("refresh_token")
+          localStorage.removeItem("usuario")
+          window.location.href = "/"
+          return Promise.reject(refreshError)
+        }
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
+
 // Serviços de usuários
 export const usuarioService = {
   listar: () => api.get("/usuarios/listar"),
@@ -44,6 +79,7 @@ export const avaliacaoService = {
   listar: () => api.get("/avaliacoes/listar"),
   avaliar: (dados: any) => api.post("/avaliacoes/avaliar/", dados),
   consultar: (filmeId: number) => api.get(`/avaliacoes/consultar/${filmeId}/`),
+  minhasAvaliacoes: () => api.get("/avaliacoes/minhas-avaliacoes"),
 }
 
 // Serviço de login

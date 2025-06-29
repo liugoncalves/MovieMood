@@ -44,13 +44,14 @@ const Cadastro: React.FC = () => {
       if (sucesso) {
         setSucesso(true)
         setTimeout(() => {
-          navigate("/login")
+          navigate("/confirmacao")
         }, 2000)
       } else {
         setErro("Erro ao cadastrar usuário. Verifique os dados e tente novamente.")
       }
-    } catch (error) {
-      setErro("Erro ao cadastrar usuário. Tente novamente.")
+    } catch (error: any) {
+      console.error("Erro no cadastro:", error)
+      setErro(error.response?.data?.erro || "Erro ao cadastrar usuário. Tente novamente.")
     } finally {
       setLoading(false)
     }
@@ -58,18 +59,18 @@ const Cadastro: React.FC = () => {
 
   if (sucesso) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#09090B] flex items-center justify-center">
         <div className="text-center">
           <div className="text-green-400 text-6xl mb-4">✓</div>
           <h2 className="text-white text-2xl font-bold mb-2">Cadastro realizado com sucesso!</h2>
-          <p className="text-gray-400">Redirecionando para o login...</p>
+          <p className="text-gray-400">Verifique seu email e confirme sua conta...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex">
+    <div className="min-h-screen bg-[#09090B] flex">
       {/* Lado esquerdo - Formulário */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
@@ -88,7 +89,7 @@ const Cadastro: React.FC = () => {
                 value={formData.nome}
                 onChange={handleChange}
                 placeholder="Insira seu nome completo"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -104,7 +105,7 @@ const Cadastro: React.FC = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Insira seu email"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -120,7 +121,7 @@ const Cadastro: React.FC = () => {
                 value={formData.cpf}
                 onChange={handleChange}
                 placeholder="000.000.000-00"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -136,7 +137,7 @@ const Cadastro: React.FC = () => {
                 value={formData.senha}
                 onChange={handleChange}
                 placeholder="Insira sua senha"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -152,7 +153,7 @@ const Cadastro: React.FC = () => {
                 value={formData.confirmar_senha}
                 onChange={handleChange}
                 placeholder="Insira sua senha"
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input-dark"
                 required
               />
             </div>
@@ -162,7 +163,7 @@ const Cadastro: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-white py-3 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Cadastrando..." : "Cadastrar"}
             </button>
@@ -170,7 +171,7 @@ const Cadastro: React.FC = () => {
 
           <div className="mt-6 text-center">
             <span className="text-gray-400">Já possui uma conta? </span>
-            <Link to="/login" className="text-blue-400 hover:text-blue-300">
+            <Link to="/login" className="hover:underline" style={{ color: '#FEFEFE' }}>
               Entrar
             </Link>
           </div>
@@ -178,7 +179,7 @@ const Cadastro: React.FC = () => {
       </div>
 
       {/* Lado direito - Logo e slogan */}
-      <div className="flex-1 bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center p-8">
+      <div className="flex-1 bg-[#09090B] flex items-center justify-center p-8">
         <div className="text-center">
           <div className="bg-white rounded-3xl p-6 mb-6 inline-block">
             <Film className="w-16 h-16 text-gray-900" />

@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [])
 
   // ✅ Faz login, salva no localStorage e atualiza o estado
-  const login = async (email: string, senha: string): Promise<boolean> => {
+  const login = async (email: string, senha: string): Promise<{ success: boolean; needsConfirmation?: boolean; cpf?: string }> => {
     try {
       const response = await api.post("/login/", { email, password: senha })
       if (response.data.access) {
@@ -44,13 +44,79 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUsuario(userData)
         setIsAuthenticated(true)
         localStorage.setItem("token", response.data.access)
+        localStorage.setItem("refresh_token", response.data.refresh)
         localStorage.setItem("usuario", JSON.stringify(userData))
-        return true
+        return { success: true }
       }
-      return false
-    } catch (error) {
+      return { success: false }
+    } catch (error: any) {
       console.error("Erro no login:", error)
-      return false
+      console.log("Status do erro:", error.response?.status)
+      console.log("Dados do erro:", error.response?.data)
+
+      // Verifica se o erro indica que o usuário precisa confirmar a conta
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        // Tenta extrair informações do erro
+        const errorData = error.response?.data
+        const errorMessage = errorData?.detail || errorData?.erro || errorData?.message || ""
+
+        console.log("Mensagem de erro extraída:", errorMessage)
+
+        // Verifica se a mensagem indica necessidade de confirmação
+        if (errorMessage.toLowerCase().includes("confirmar") ||
+          errorMessage.toLowerCase().includes("confirmação") ||
+          errorMessage.toLowerCase().includes("não confirmado") ||
+          errorMessage.toLowerCase().includes("nao confirmado") ||
+          errorMessage.toLowerCase().includes("conta não confirmada") ||
+          errorMessage.toLowerCase().includes("conta nao confirmada")) {
+
+          console.log("Detectada necessidade de confirmação!")
+
+          // Extrai o CPF da resposta de erro se disponível
+          const cpf = errorData?.cpf || ""
+          return {
+            success: false,
+            needsConfirmation: true,
+            cpf: cpf
+          }
+        }
+      }
+
+      // Para outros tipos de erro, verifica se há indicação de confirmação necessária
+      const errorMessage = error.response?.data?.detail ||
+        error.response?.data?.erro ||
+        error.response?.data?.message ||
+        error.message || ""
+
+      console.log("Verificando mensagem de erro geral:", errorMessage)
+
+      if (errorMessage.toLowerCase().includes("confirmar") ||
+        errorMessage.toLowerCase().includes("confirmação") ||
+        errorMessage.toLowerCase().includes("não confirmado") ||
+        errorMessage.toLowerCase().includes("nao confirmado")) {
+
+        console.log("Detectada necessidade de confirmação na verificação geral!")
+
+        const cpf = error.response?.data?.cpf || ""
+        return {
+          success: false,
+          needsConfirmation: true,
+          cpf: cpf
+        }
+      }
+
+      // Se chegou até aqui e é um erro 401, pode ser um usuário não confirmado
+      // Vamos assumir que é necessário confirmação e deixar o usuário tentar
+      if (error.response?.status === 401) {
+        console.log("Erro 401 detectado - assumindo necessidade de confirmação")
+        return {
+          success: false,
+          needsConfirmation: true,
+          cpf: ""
+        }
+      }
+
+      return { success: false }
     }
   }
 
@@ -59,7 +125,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUsuario(null)
     setIsAuthenticated(false)
     localStorage.removeItem("token")
+    localStorage.removeItem("refresh_token")
     localStorage.removeItem("usuario")
+    // Redireciona para a página de login após logout
+    window.location.href = "/"
   }
 
   // ✅ Cadastro (padrão)
@@ -69,7 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { confirmar_senha, ...dadosUsuario } = dados
       const response = await api.post("/usuarios/cadastrar/", dadosUsuario)
-      return response.data.success || response.status === 201
+      return response.status === 200 || response.status === 201
     } catch (error) {
       console.error("Erro no cadastro:", error)
       return false

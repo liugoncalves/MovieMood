@@ -5,6 +5,8 @@ export interface Usuario {
   cpf: string
   senha?: string
   confirmado?: boolean
+  cargo?: string
+  is_active?: boolean
 }
 
 export interface Filme {
@@ -22,18 +24,21 @@ export interface Filme {
 export interface Avaliacao {
   id?: number
   usuario: number
-  filme: number
+  filme: number | Filme
   nota: number
-  texto: string
+  texto?: string
+  comentario?: string
   criado_em?: string
+  data_avaliacao?: string
   nome_usuario?: string
   sentimento?: string
   sentimento_texto?: string
+  cpf_usuario?: string
 }
 
 export interface AuthContextType {
   usuario: Usuario | null
-  login: (email: string, senha: string) => Promise<boolean>
+  login: (email: string, senha: string) => Promise<{ success: boolean; needsConfirmation?: boolean; cpf?: string }>
   logout: () => void
   cadastrar: (dados: Omit<Usuario, "id"> & { confirmar_senha: string }) => Promise<boolean>
   isAuthenticated: boolean

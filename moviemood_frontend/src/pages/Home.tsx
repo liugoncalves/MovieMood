@@ -26,11 +26,6 @@ const Home: React.FC = () => {
       const filmesData = response.data
 
       setFilmes(filmesData)
-      console.log("Filmes carregados:")
-        filmesData.forEach((f: Filme) =>
-          console.log(`ID ${f.id} - ${f.nome} | gênero: "${f.genero}"`)
-        )
-
 
       // Selecionar filme em destaque (sempre o com maior nota média)
       if (filmesData.length > 0) {

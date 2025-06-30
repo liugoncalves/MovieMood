@@ -55,7 +55,7 @@ INSERT INTO public.filmes_filme (nome, descricao, diretor, genero, ano, nota_med
 -- Name: filmes_filme_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.filmes_filme_id_seq', 62, true);
+SELECT pg_catalog.setval('public.filmes_filme_id_seq', (SELECT MAX(id) FROM public.filmes_filme));
 
 
 --

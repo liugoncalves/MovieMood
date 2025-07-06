@@ -8,6 +8,7 @@ import type { Filme } from "../types"
 import { filmeService } from "../services/api"
 import { generos } from "../utils/generos"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [filmes, setFilmes] = useState<Filme[]>([])
@@ -15,6 +16,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [paginaAtual, setPaginaAtual] = useState(0)
   const filmesPorPagina = 6
+  const navigate = useNavigate();
 
   useEffect(() => {
     carregarFilmes()
@@ -214,7 +216,12 @@ const Home: React.FC = () => {
 
           return (
             <div key={valor} className="mb-10">
-              <h3 className="subtitle">{label}</h3>
+              <h3 
+                className="subtitle cursor-pointer hover:underline"
+                onClick={() => navigate(`/buscar?genero=${normalizeGenero(label)}`)}
+                >
+                  {label}
+              </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                 {filmesDoGenero.map((filme) => (
                   <FilmeCard key={filme.id} filme={filme} minimal />

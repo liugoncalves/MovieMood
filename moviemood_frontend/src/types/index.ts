@@ -40,6 +40,6 @@ export interface AuthContextType {
   usuario: Usuario | null
   login: (email: string, senha: string) => Promise<{ success: boolean; needsConfirmation?: boolean; cpf?: string }>
   logout: () => void
-  cadastrar: (dados: Omit<Usuario, "id"> & { confirmar_senha: string }) => Promise<boolean>
+  cadastrar: (dados: Omit<Usuario, "id"> & { confirmar_senha: string }) => Promise<void>;
   isAuthenticated: boolean
 }

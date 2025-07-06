@@ -77,7 +77,7 @@ const Confirmacao: React.FC = () => {
           {veioDoLogin && (
             <div className="mb-6 p-4 bg-blue-900 border border-blue-600 rounded-lg">
               <div className="flex items-center space-x-2">
-                <div className="text-blue-400">ℹ️</div>
+                <div className="text-blue-400"></div>
                 <span className="text-blue-400 text-sm">
                   {searchParams.get("cpf")
                     ? "Se você foi cadastrado diretamente no sistema, entre em contato com o administrador para obter seu código de confirmação."
@@ -107,21 +107,6 @@ const Confirmacao: React.FC = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="cpf" className="block text-white text-sm font-medium mb-2">
-                CPF
-              </label>
-              <input
-                id="cpf"
-                type="text"
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-                placeholder="000.000.000-00"
-                className="input-dark"
-                required
-              />
-            </div>
-
             <div>
               <label htmlFor="codigo" className="block text-white text-sm font-medium mb-2">
                 Código de Confirmação

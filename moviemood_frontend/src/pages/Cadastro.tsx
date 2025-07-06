@@ -40,15 +40,11 @@ const Cadastro: React.FC = () => {
     }
 
     try {
-      const sucesso = await cadastrar(formData)
-      if (sucesso) {
-        setSucesso(true)
-        setTimeout(() => {
-          navigate("/confirmacao")
-        }, 2000)
-      } else {
-        setErro("Erro ao cadastrar usuário. Verifique os dados e tente novamente.")
-      }
+      await cadastrar(formData)
+      setSucesso(true)
+      setTimeout(() => {
+        navigate(`/confirmacao?cpf=${formData.cpf}`)
+      }, 2000)
     } catch (error: any) {
       console.error("Erro no cadastro:", error)
       setErro(error.response?.data?.erro || "Erro ao cadastrar usuário. Tente novamente.")

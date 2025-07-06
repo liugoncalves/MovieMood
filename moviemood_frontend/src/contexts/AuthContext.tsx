@@ -131,19 +131,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.location.href = "/"
   }
 
-  // ✅ Cadastro (padrão)
+  // ✅ Corrigido: agora lança erro para o componente tratar
   const cadastrar = async (
     dados: Omit<Usuario, "id"> & { confirmar_senha: string }
-  ): Promise<boolean> => {
-    try {
-      const { confirmar_senha, ...dadosUsuario } = dados
-      const response = await api.post("/usuarios/cadastrar/", dadosUsuario)
-      return response.status === 200 || response.status === 201
-    } catch (error) {
-      console.error("Erro no cadastro:", error)
-      return false
+  ): Promise<void> => {
+    const { confirmar_senha, ...dadosUsuario } = dados
+    const response = await api.post("/usuarios/cadastrar/", dadosUsuario)
+
+    // Você pode opcionalmente validar status se quiser
+    if (!(response.status === 200 || response.status === 201)) {
+      throw new Error("Erro ao cadastrar") // só por garantia
     }
   }
+
 
   return (
     <AuthContext.Provider value={{ usuario, login, logout, cadastrar, isAuthenticated }}>

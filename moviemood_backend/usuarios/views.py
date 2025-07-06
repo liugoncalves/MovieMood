@@ -75,7 +75,7 @@ class ConfirmarCadastroView(APIView):
                 nome=dados['nome'],
                 cpf=dados['cpf'],
                 email=dados['email'],
-                senha=dados['senha'],
+                password=dados['senha'],
                 cargo=dados.get('cargo', 'usuario')
             )
             usuario.is_active = True
